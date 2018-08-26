@@ -85,9 +85,20 @@ public class Dikstra {
 		while(!result.isEmpty()) {
 			Point point = result.pop();
 			System.out.println("Route : " + point.getName() + " (Distance : " + point.getPreviousCost() + ")");
+			
+			for(Point alternative : point.getAlternatives()) {
+				System.out.println("Alternative : " + point.getPrevious().getName() + "->" + alternative.getName() + "->" + point.getName());
+			}
+			
+			
 		}
 		
 		System.out.println("Route : " + endPoint.getName() + " (Distance : " + endPoint.getPreviousCost() + ")");
+		for(Point alternative : endPoint.getAlternatives()) {
+			System.out.println("Alternative : " + endPoint.getPrevious().getName() + "->" + alternative.getName() + "->" + endPoint.getName());
+		}
+		
+		
 		System.out.println("Total distance : " + cost.get(stringToPointMap.get(endPointName)));
 		
 		/*
