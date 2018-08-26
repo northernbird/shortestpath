@@ -68,10 +68,13 @@ public class Dikstra {
 			
 			previousPoint = previousPoint.getPrevious();
 
+
 			if(previousPoint == null) {
 				break;
 			} else {
+
 				result.push(previousPoint);
+				
 			}
 			
 		}
@@ -83,8 +86,15 @@ public class Dikstra {
 			Point point = result.pop();
 			System.out.println("Route : " + point.getName() + " (Distance : " + point.getPreviousCost() + ")");
 		}
+		
 		System.out.println("Route : " + endPoint.getName() + " (Distance : " + endPoint.getPreviousCost() + ")");
 		System.out.println("Total distance : " + cost.get(stringToPointMap.get(endPointName)));
+		
+		/*
+		 * Output alternative way
+		 */
+		System.out.println("---Alternative Ways---");
+		outputAlternatives(endPoint.getAlternatives());
 		
 	}
 	
@@ -94,13 +104,33 @@ public class Dikstra {
 		List<Connection> connections = point.getConnections();
 		for(Connection connection : connections) {
 			Point connectTo = connection.getConnectTo();
+			
 			if(!connectTo.isDone()) {
 				
 				isAllDone = false;
 				if(cost.get(connectTo) > cost.get(point) + connection.getDistance()) {
+					
+					/*
+					 * Add as an alternative way
+					 */
+					if(cost.get(connectTo) != Integer.MAX_VALUE) {
+						connectTo.addtAlternatives(point);
+					}
+					
+					/*
+					 * Then update previous
+					 */
 					cost.put(connectTo, cost.get(point) + connection.getDistance());
 					connectTo.setPrevious(point);
 					connectTo.setPreviousCost(connection.getDistance());
+					
+				} else {
+					/*
+					 * Add as an alternative way
+					 */
+					if(cost.get(connectTo) != Integer.MAX_VALUE) {
+						connectTo.addtAlternatives(point);
+					}
 				}
 				
 			}
@@ -118,14 +148,28 @@ public class Dikstra {
 		
 		for(Connection connection : connections) {
 			Point connectTo = connection.getConnectTo();
-			
-			if(connectTo.getName().equals("Beijing")) {
-				System.out.println("Stop");
-			}
+
 			if(!connectTo.isDone()) {
 				updatePoints(connectTo);
 			}
 			
+		}
+		
+	}
+	
+	private void outputAlternatives(List<Point> alternatives) {
+		 
+		for(Point alternative : alternatives) {
+			System.out.println(alternative.getName());
+			Point previous = alternative.getPrevious();
+			System.out.println(previous.getName());
+			while(previous!=null) {
+				previous = previous.getPrevious();
+				if(previous!=null) {
+					System.out.println(previous.getName());
+				}
+				
+			}
 		}
 		
 	}

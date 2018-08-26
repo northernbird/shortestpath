@@ -10,6 +10,7 @@ public class Point {
 	private List<Connection> connections = new ArrayList<Connection>();
 	private Point previous;
 	private boolean done = false;
+    private List<Point> alternatives = new ArrayList<Point>();
 	
 	public Point(String name) {
 		this.name = name;
@@ -43,6 +44,12 @@ public class Point {
 	}
 	public void setPreviousCost(int previousCost) {
 		this.previousCost = previousCost;
+	}
+	public List<Point> getAlternatives() {
+		return alternatives;
+	}
+	public void addtAlternatives(Point alternative) {
+		this.alternatives.add(alternative);
 	}
 	
 	
